@@ -10,10 +10,11 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: "https://noteapp-frontend-nu.vercel.app", // ✅ no trailing slash
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: "https://noteapp-frontend-nu.vercel.app", // ✅ your frontend URL
+  methods: ["GET", "POST"],
   credentials: true
 }));
+
 
 
 
