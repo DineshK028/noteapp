@@ -12,6 +12,7 @@ const app = express();
 // Middleware
 app.use(cors({
   origin: "https://notes-app-frontend-phi-neon.vercel.app",
+  Methods:{"POST","GET"},
   credentials: true
 }));
 app.use(express.json());
