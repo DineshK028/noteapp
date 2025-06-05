@@ -9,12 +9,12 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
 app.use(cors({
-  origin: "https://noteapp-frontend-nu.vercel.app", // no trailing slash
-  methods: ["POST", "GET"],
+  origin: "https://noteapp-frontend-nu.vercel.app", // ✅ no trailing slash
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
+
 
 
 // MongoDB Connection
@@ -38,9 +38,14 @@ const connectDB = async () => {
 // Connect to MongoDB
 connectDB();
 
-// Routes
+// ✅ Good order:
+app.use(cors({ /* config */ }));
+app.use(express.json());
+
+// Then register routes
 app.use('/api/auth', authRoutes);
 app.use('/api/notes', noteRoutes);
+
 
 // Root route
 app.get('/', (req, res) => {
