@@ -13,7 +13,7 @@ const Register = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-  'https://noteapp-anfw.vercel.app/api/auth/register',
+  'https://noteappbackend-iota.vercel.app/api/auth/register',
   { name, email, password },
   { withCredentials: true }
 );
