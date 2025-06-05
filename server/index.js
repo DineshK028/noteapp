@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import cookieParser from 'cookie-parser'; // If you're using cookies
+import cookieParser from 'cookie-parser';
 import authRoutes from './routes/auth.js';
 import noteRoutes from './routes/notes.js';
 
@@ -10,9 +10,20 @@ dotenv.config();
 
 const app = express();
 
-// ✅ CORS - only once, at the top
+// ✅ CORS: Allow multiple frontend URLs
+const allowedOrigins = [
+  "https://noteapp-frontend-nu.vercel.app",
+  "https://notes-app-frontend-phi-neon.vercel.app"
+];
+
 app.use(cors({
-  origin: "https://noteapp-frontend-nu.vercel.app",
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
