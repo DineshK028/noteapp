@@ -11,7 +11,7 @@ function App() {
         </p>
         <a
           className="App-link"
-          href="https://notes-app-backend-eozg.vercel.app/"
+          href="https://noteapp-anfw.vercel.app//"
           target="_blank"
           rel="noopener noreferrer"
         >
