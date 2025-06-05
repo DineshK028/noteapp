@@ -13,16 +13,11 @@ const Register = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'https://notes-app-backend-eozg.vercel.app/api/auth/register',
-        {
-          name,
-          email,
-          password
-        },
-        {
-          withCredentials: true // ✅ Required for sending cookies (if backend uses sessions or JWT in cookies)
-        }
-      );
+  'https://noteapp-anfw.vercel.app/api/auth/register',
+  { name, email, password },
+  { withCredentials: true }
+);
+
 
       if (response.data.success) {
         toast.success('Account created successfully');
