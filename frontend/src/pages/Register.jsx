@@ -12,7 +12,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/auth/register', {
+      const response = await axios.post('https://noteapp-anfw.vercel.app/', {
         name,
         email,
         password
