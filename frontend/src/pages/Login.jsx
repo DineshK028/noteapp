@@ -14,7 +14,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-  'https://noteapp-anfw.vercel.app/api/auth/login',
+  'https://noteappbackend-iota.vercel.app/api/auth/login',
   { email, password },
   { withCredentials: true }
 );
