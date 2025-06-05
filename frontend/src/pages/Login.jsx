@@ -13,16 +13,24 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/auth/login', {
-        email,
-        password
-      });
-      
+      const response = await axios.post(
+        'https://notes-app-backend-eozg.vercel.app/api/auth/login',
+        {
+          email,
+          password
+        },
+        {
+          withCredentials: true // ✅ required for sending cookies/session
+        }
+      );
+
       if (response.data.success) {
-        localStorage.setItem('token', response.data.token);
+        // If you're using cookies for session, no need to store token
         login(response.data.user);
         toast.success('Logged in successfully');
-        navigate('/');
+        navigate('/notes'); // redirect to /notes or wherever you want
+      } else {
+        toast.error(response.data.message || 'Login failed');
       }
     } catch (error) {
       toast.error(error.response?.data?.message || 'Error logging in');
@@ -72,4 +80,4 @@ const Login = () => {
   );
 };
 
-export default Login; 
+export default Login;
