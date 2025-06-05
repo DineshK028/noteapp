@@ -12,7 +12,7 @@ const app = express();
 
 // ✅ CORS - only once, at the top
 app.use(cors({
-  origin: "https://noteappbackend-iota.vercel.app/",
+  origin: "https://noteapp-frontend-nu.vercel.app",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
