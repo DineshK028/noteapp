@@ -11,11 +11,11 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: "https://noteapp-frontend-nu.vercel.app/",
-methods: ["POST", "GET"],
+  origin: "https://noteapp-frontend-nu.vercel.app", // no trailing slash
+  methods: ["POST", "GET"],
   credentials: true
 }));
-app.use(express.json());
+
 
 // MongoDB Connection
 const connectDB = async () => {
