@@ -12,15 +12,23 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://noteapp-anfw.vercel.app/', {
-        name,
-        email,
-        password
-      });
-      
+      const response = await axios.post(
+        'https://notes-app-backend-eozg.vercel.app/api/auth/register',
+        {
+          name,
+          email,
+          password
+        },
+        {
+          withCredentials: true // ✅ Required for sending cookies (if backend uses sessions or JWT in cookies)
+        }
+      );
+
       if (response.data.success) {
         toast.success('Account created successfully');
         navigate('/login');
+      } else {
+        toast.error(response.data.message || 'Registration failed');
       }
     } catch (error) {
       toast.error(error.response?.data?.message || 'Error creating account');
@@ -80,4 +88,4 @@ const Register = () => {
   );
 };
 
-export default Register; 
+export default Register;
