@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser'; // If you're using cookies
 import authRoutes from './routes/auth.js';
 import noteRoutes from './routes/notes.js';
 
@@ -9,18 +10,18 @@ dotenv.config();
 
 const app = express();
 
-import cors from 'cors';
-
+// ✅ CORS - only once, at the top
 app.use(cors({
-  origin: "https://noteapp-frontend-nu.vercel.app", // ✅ Specific origin only
+  origin: "https://noteapp-frontend-nu.vercel.app",
   methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true // ✅ Needed if using cookies or auth headers
+  credentials: true
 }));
 
+// ✅ Middleware
+app.use(express.json());
+app.use(cookieParser());
 
-
-
-// MongoDB Connection
+// ✅ MongoDB Connection
 const connectDB = async () => {
   try {
     if (!process.env.MONGODB_URI) {
@@ -33,29 +34,20 @@ const connectDB = async () => {
     console.log('Connected to MongoDB');
   } catch (error) {
     console.error('MongoDB connection error:', error);
-    // Don't exit process in serverless environment
-    // process.exit(1);
   }
 };
-
-// Connect to MongoDB
 connectDB();
 
-// ✅ Good order:
-app.use(cors({ /* config */ }));
-app.use(express.json());
-
-// Then register routes
+// ✅ Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/notes', noteRoutes);
 
-
-// Root route
+// ✅ Base Route
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to the Notes App API' });
 });
 
-// Error handling middleware
+// ✅ Error Handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ 
@@ -65,7 +57,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// For local development
+// ✅ Local development
 if (process.env.NODE_ENV !== 'production') {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
@@ -73,5 +65,5 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-// Export for Vercel
-export default app; 
+// ✅ Export for Vercel
+export default app;
