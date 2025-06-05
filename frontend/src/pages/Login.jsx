@@ -14,15 +14,11 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'https://notes-app-backend-eozg.vercel.app/api/auth/login',
-        {
-          email,
-          password
-        },
-        {
-          withCredentials: true // ✅ required for sending cookies/session
-        }
-      );
+  'https://noteapp-anfw.vercel.app/api/auth/login',
+  { email, password },
+  { withCredentials: true }
+);
+
 
       if (response.data.success) {
         // If you're using cookies for session, no need to store token
