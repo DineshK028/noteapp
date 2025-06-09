@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
 // Configure axios
-axios.defaults.baseURL = 'https://notes-app-backend-eozg.vercel.app';
+axios.defaults.baseURL = 'https://noteapp-backend.onrender.com';
 axios.defaults.withCredentials = true;
 
 const AuthContext = createContext();
