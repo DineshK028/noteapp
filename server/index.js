@@ -12,8 +12,10 @@ const app = express();
 
 // ✅ CORS: Allow multiple frontend URLs
 const allowedOrigins = [
+  "https://noteapp-blush.vercel.app",
   "https://noteapp-frontend-nu.vercel.app",
-  "https://notes-app-frontend-phi-neon.vercel.app"
+  "https://notes-app-frontend-phi-neon.vercel.app",
+  "http://localhost:3000" // For local development
 ];
 
 app.use(cors({
