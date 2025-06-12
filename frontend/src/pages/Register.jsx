@@ -2,22 +2,24 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import config from '../config';
 
 const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post(
-  'https://noteappbackend-iota.vercel.app/api/auth/register',
-  { name, email, password },
-  { withCredentials: true }
-);
-
+        `${config.API_URL}/auth/register`,
+        { name, email, password },
+        { withCredentials: true }
+      );
 
       if (response.data.success) {
         toast.success('Account created successfully');
@@ -26,7 +28,10 @@ const Register = () => {
         toast.error(response.data.message || 'Registration failed');
       }
     } catch (error) {
+      console.error('Registration error:', error);
       toast.error(error.response?.data?.message || 'Error creating account');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -43,6 +48,7 @@ const Register = () => {
               onChange={(e) => setName(e.target.value)}
               className="w-full px-3 py-2 border rounded"
               required
+              disabled={loading}
             />
           </div>
           <div className="mb-4">
@@ -53,6 +59,7 @@ const Register = () => {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-3 py-2 border rounded"
               required
+              disabled={loading}
             />
           </div>
           <div className="mb-6">
@@ -63,13 +70,15 @@ const Register = () => {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-3 py-2 border rounded"
               required
+              disabled={loading}
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 disabled:bg-blue-300"
+            disabled={loading}
           >
-            Register
+            {loading ? 'Creating Account...' : 'Register'}
           </button>
         </form>
         <p className="mt-4 text-center">

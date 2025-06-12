@@ -7,6 +7,7 @@ import Navbar from '../components/Navbar';
 import NoteCard from '../components/NoteCard';
 import NoteModal from '../components/NoteModal';
 import { FaPlus } from 'react-icons/fa';
+import config from '../config';
 
 const Home = () => {
   const [notes, setNotes] = useState([]);
@@ -37,7 +38,7 @@ const Home = () => {
   const fetchNotes = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('/api/notes', {
+      const response = await axios.get(`${config.API_URL}/notes`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -52,7 +53,7 @@ const Home = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        '/api/notes',
+        `${config.API_URL}/notes`,
         noteData,
         {
           headers: { Authorization: `Bearer ${token}` }
@@ -72,7 +73,7 @@ const Home = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `/api/notes/${currentNote._id}`,
+        `${config.API_URL}/notes/${currentNote._id}`,
         noteData,
         {
           headers: { Authorization: `Bearer ${token}` }
@@ -93,7 +94,7 @@ const Home = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.delete(
-        `/api/notes/${id}`,
+        `${config.API_URL}/notes/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -111,7 +112,7 @@ const Home = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `/api/notes/${note._id}`,
+        `${config.API_URL}/notes/${note._id}`,
         { ...note, important: !note.important },
         {
           headers: { Authorization: `Bearer ${token}` }

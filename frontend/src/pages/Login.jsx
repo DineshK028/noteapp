@@ -3,33 +3,37 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/AuthContext';
+import config from '../config';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post(
-  'https://noteappbackend-iota.vercel.app/api/auth/login',
-  { email, password },
-  { withCredentials: true }
-);
-
+        `${config.API_URL}/auth/login`,
+        { email, password },
+        { withCredentials: true }
+      );
 
       if (response.data.success) {
-        // If you're using cookies for session, no need to store token
-        login(response.data.user);
+        login(response.data.user, response.data.token);
         toast.success('Logged in successfully');
-        navigate('/notes'); // redirect to /notes or wherever you want
+        navigate('/notes');
       } else {
         toast.error(response.data.message || 'Login failed');
       }
     } catch (error) {
+      console.error('Login error:', error);
       toast.error(error.response?.data?.message || 'Error logging in');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -46,6 +50,7 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-3 py-2 border rounded"
               required
+              disabled={loading}
             />
           </div>
           <div className="mb-6">
@@ -56,13 +61,15 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-3 py-2 border rounded"
               required
+              disabled={loading}
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 disabled:bg-blue-300"
+            disabled={loading}
           >
-            Login
+            {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
         <p className="mt-4 text-center">

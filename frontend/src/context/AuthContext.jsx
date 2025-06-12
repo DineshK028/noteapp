@@ -1,8 +1,9 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import config from '../config';
 
 // Configure axios
-axios.defaults.baseURL = 'https://noteapp-3-wnrn.onrender.com';
+axios.defaults.baseURL = config.API_URL;
 axios.defaults.withCredentials = true;
 
 const AuthContext = createContext();
@@ -11,6 +12,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const verifyUser = async () => {
@@ -18,7 +20,7 @@ export const AuthProvider = ({ children }) => {
         const token = localStorage.getItem('token');
         console.log('Verifying user with token:', token);
         if (token) {
-          const response = await axios.get('/api/auth/verify', {
+          const response = await axios.get('/auth/verify', {
             headers: { Authorization: `Bearer ${token}` }
           });
           console.log('Verify response:', response.data);
@@ -30,14 +32,19 @@ export const AuthProvider = ({ children }) => {
         console.error('Error verifying user:', error);
         localStorage.removeItem('token');
         setUser(null);
+      } finally {
+        setLoading(false);
       }
     };
 
     verifyUser();
   }, []);
 
-  const login = (userData) => {
+  const login = (userData, token) => {
     setUser(userData);
+    if (token) {
+      localStorage.setItem('token', token);
+    }
     console.log('User set after login:', userData);
   };
 
@@ -48,7 +55,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

@@ -10,34 +10,19 @@ dotenv.config();
 
 const app = express();
 
-// ✅ CORS: Allow multiple frontend URLs
-const allowedOrigins = [
-  "https://noteapp-blush.vercel.app",
-  "https://noteapp-git-main-dineshs-projects-596f99c3.vercel.app",
-  "https://noteapp-f08k5il1g-dineshs-projects-596f99c3.vercel.app",
-  "http://localhost:3000" // For local development
-];
-
+// CORS configuration for local development
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: 'http://localhost:3000',
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
-  preflightContinue: false,
-  optionsSuccessStatus: 204
+  credentials: true
 }));
 
-// ✅ Middleware
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
 
-// ✅ MongoDB Connection
+// MongoDB Connection
 const connectDB = async () => {
   try {
     if (!process.env.MONGODB_URI) {
@@ -50,20 +35,20 @@ const connectDB = async () => {
     console.log('Connected to MongoDB');
   } catch (error) {
     console.error('MongoDB connection error:', error);
+    process.exit(1); // Exit if cannot connect to database
   }
 };
-connectDB();
 
-// ✅ Routes
+// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/notes', noteRoutes);
 
-// ✅ Base Route
+// Base Route
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to the Notes App API' });
 });
 
-// ✅ Error Handling
+// Error Handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ 
@@ -73,11 +58,19 @@ app.use((err, req, res, next) => {
   });
 });
 
-// ✅ Start server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// Start server
+const startServer = async () => {
+  try {
+    await connectDB();
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+      console.log(`API URL: http://localhost:${PORT}/api`);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+};
 
-// ✅ Export for Vercel
-export default app;
+startServer();
