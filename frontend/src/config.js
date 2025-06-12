@@ -1,5 +1,5 @@
 const config = {
-  API_URL: 'http://localhost:7000/api'
+  API_URL: 'https://noteapp-backend-tau.vercel.app/api'
 };
 
 export default config; 
