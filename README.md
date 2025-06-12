@@ -114,12 +114,3 @@ The application will be available at:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## License
-
-This project is licensed under the MIT License.
-
-## Contact
-
-Your Name - [@your_twitter](https://twitter.com/your_twitter)
-
-Project Link: [https://github.com/DineshK028/noteapp](https://github.com/DineshK028/noteapp)
