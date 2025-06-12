@@ -1,5 +1,5 @@
 const config = {
-  API_URL: 'https://noteapp-backend-tau.vercel.app/api'
+  API_URL: 'https://noteapp-backend-iota.vercel.app/api'
 };
 
 export default config; 

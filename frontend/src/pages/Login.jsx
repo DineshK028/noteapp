@@ -19,7 +19,13 @@ const Login = () => {
       const response = await axios.post(
         `${config.API_URL}/auth/login`,
         { email, password },
-        { withCredentials: true }
+        { 
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        }
       );
 
       if (response.data.success) {

@@ -11,12 +11,20 @@ dotenv.config();
 const app = express();
 
 // CORS configuration
-app.use(cors({
+const corsOptions = {
   origin: ['https://noteapp-henna-ten.vercel.app', 'http://localhost:3000'],
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
-}));
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+};
+
+// Apply CORS middleware
+app.use(cors(corsOptions));
+
+// Handle preflight requests
+app.options('*', cors(corsOptions));
 
 // Middleware
 app.use(express.json());
